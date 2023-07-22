@@ -145,3 +145,104 @@ function getDogBreedInfo(breedName) {
                     showModal();
                 })
         }
+
+        function getCatBreedInfo(breedName) {
+            fetch('https://api.api-ninjas.com/v1/cats?name=' + breedName, {
+                method: 'GET',
+                headers: { 'X-Api-Key': 'ClM+4cVtO1YtwmOO8xz1jw==0CKehjLoj6PIJUqT'},
+                contentType: 'application/json',
+                success: function(result) {
+                    console.log(result);
+                }
+            })
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(breedData) {
+                    console.log(breedData[0]);
+
+                    
+        
+                    var container = document.querySelector(".breed-data");
+                    
+                    var centerDiv = document.createElement('div');
+                    centerDiv.classList.add("is-flex", "is-flex-direction-column", "is-align-items-center");
+                    container.appendChild(centerDiv);
+                    // append h1 to contaier div and add classes
+                    var h1 = document.createElement('h1');
+                    h1.classList.add("is-size-2", "has-text-centered", "has-text-link", "has-text-weight-semibold")
+                    centerDiv.appendChild(h1);
+
+                    var h2 = document.createElement('h2');
+                    h2.classList.add("is-size-3", "has-text-centered", "has-text-link")
+                    centerDiv.appendChild(h2);
+
+                    var petImg = document.createElement('img');
+                        petImg.setAttribute("src", breedData[0].image_link);
+                    centerDiv.appendChild(petImg);
+
+                    // capitalize first letter of breed name
+                    h1.innerText = breedName.charAt(0).toUpperCase() + breedName.slice(1);
+
+                    h2.innerText = "On a scale of 1 to 5 (low to high)"
+
+                    // create list items
+                    var ul = document.createElement('ul');
+
+                    // intelligence
+                    var li1 = document.createElement('li');
+                    li1.innerText = "Intelligence Level: " + breedData[0].intelligence;
+
+                    // grooming
+                    var li2 = document.createElement('li');
+                    li2.innerText = "Grooming : " + breedData[0].grooming;
+
+                    // general health
+                    var li3 = document.createElement('li');
+                    li3.innerText = "General Health: " + breedData[0].general_health;
+
+                    // good with children
+                    var li4 = document.createElement('li');
+                    li4.innerText = "Good with Children: " + breedData[0].children_friendly;
+
+                    // good with other pets
+                    var li5 = document.createElement('li');
+                    li5.innerText = "Good with other pets: " + breedData[0].other_pets_friendly;
+
+                    // max weight
+                    var li6 = document.createElement('li');
+                    li6.innerText = "Maximum Weight: " + breedData[0].max_weight + " pounds";
+
+                    // max life expectancy
+                    var li7 = document.createElement('li');
+                    li7.innerText = "Maximum Life Expectancy: " + breedData[0].max_life_expectancy + " years";
+
+                    // playfullness
+                    var li8 = document.createElement('li');
+                    li8.innerText = "Playfulness: " + breedData[0].playfulness;
+
+                    // shedding
+                    var li9 = document.createElement('li');
+                    li9.innerText = "Shedding: " + breedData[0].shedding;
+
+                    ul.appendChild(li1);
+                    ul.appendChild(li2);
+                    ul.appendChild(li3);
+                    ul.appendChild(li4);
+                    ul.appendChild(li5);
+                    ul.appendChild(li6);
+                    ul.appendChild(li7);
+                    ul.appendChild(li8);
+                    ul.appendChild(li9);
+                    
+                    container.appendChild(ul);
+
+                    searchHistoryCat.push(breedName);
+                    localStorage.setItem("searchCat", JSON.stringify(searchHistoryCat));
+                    displayLocalStorage(breedName);
+
+                }) .catch(function(error) {
+                    console.log(error);
+                    showModal();
+                })  
+        }
