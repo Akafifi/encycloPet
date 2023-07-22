@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>encycloPet</title>
+    <!-- Bulma Framework -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.4/css/bulma.min.css"/>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="has-background-link">
+        <h1 class="has-text-white is-size-1 has-text-centered">encycloPet</h1>
+    </header>
+
+    <!-- Hero Section with 2 buttons -->
+    <section id="hero" class="hero is-medium is-large">
+        <div class="hero-body">
+          <h1 id="hero-text" class="has-text-white is-size-1 has-text-centered">Not sure what to adopt? Get the facts!</h1>
+
+          <div class="fact-container is-flex is-justify-content-center m-2">
+              <button id="dog-fact" class="button is-link is-large m-2">Dog Fact</button>
+              <button id="cat-fact" class="button is-link is-large m-2">Cat Fact</button>
+        </div>
+        </div>
+    </section>
+
+        <!-- notification to be revealed if search input does not work -->
+    <div id = "modal" class="container hide">
+        <div class="notification is-danger m-2">
+            <button class="delete"></button>
+                Please choose a valid breed.
+        </div>
+    </div>
+
+     <!-- User form to input location information and wants -->
+     <div class="container">
+      <section id="breed-form" class="section is-small">
+        <h2 class="is-size-1 has-text-centered has-text-link has-text-weight-semibold" >Pick your pet!</h2>
+<!-- images -->
+          <div id="img_container">
+            <img src="./assets/images/dog.gif" alt="dogs">
+            <img src="./assets/images/cat.gif" alt="cat">
+        </div>
+
+        
+          <form id="breed-input">
+              <div class="field">
+                  <label class="label is-size-3">Breed: </label>
+                  <div class="control">
+                  <input class="search-breed input is-link" type="search" placeholder="Breed name">
+                  </div>
+              </div>
+
+              
+              
+              <div class="field">
+                  <label class="label is-size-3">Pet Type</label>
+                  <div class="control">
+                  <div class="select is-link">
+                      <select id="pet-select" onchange="changeSelected(this)" required>
+                      <option value="">Select</option>
+                      <option value="dog">Dog</option>
+                      <option value="cat">Cat</option>
+                      </select>
+                  </div>
+                  </div>
+              </div>
+              
+              <div class="field is-grouped">
+                  <div class="control">
+                  <button class="button is-link" type="submit">Submit</button>
+                  <button id="clear" class="button is-link" type="submit">Clear History</button>
+                  </div>
+              </div>
+          </form>
+          <div id="search-history-dog"></div>
+          <div id="search-history-cat"></div>
+      </section>
+  </div>
+
+  <!-- div for information from APIs in javascript -->
+  <div class="breed-data section is-small m-2">
+  </div>
+
+ 
+  <!-- Videos -->
+<div class="video_block">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/m8RMv0tkwVk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    <h2>(MsMojo, 2022)</h2>
+  </div>
+
+  <div class="video_block">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/ULF0O2EmWzY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    <h2>(MsMojo, 2022)</h2>
+  </div>
+
+    <!-- footer -->
+    <footer class="footer has-background-link">
+      <div class="content has-text-centered has-text-white">
+          <p>
+            <strong class="has-text-white">encyloPet</strong> by Adam Afifi, Nicole Stark, & Noah Koleske. The source code is licensed
+            <a href="http://opensource.org/licenses/mit-license.php" class="has-text-dark">MIT</a>.
+          </p>
+        </div>
+  </footer>
+    
+    <!-- Custom JavaScript -->
+    <script src="./assets/js/script.js"></script>
+</body>
+</html>
