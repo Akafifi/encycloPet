@@ -246,3 +246,23 @@ function getDogBreedInfo(breedName) {
                     showModal();
                 })  
         }
+
+        function getBreedInput (event) {
+            event.preventDefault();
+            var searchTerm = breedInputEl.value;
+            clearCurrent();
+            console.log(selectedPetType)
+            if (selectedPetType === 'cat') {
+                getCatBreedInfo(searchTerm);
+            } else if (selectedPetType === 'dog') {
+                getDogBreedInfo(searchTerm)
+            }
+        }
+
+        function  showModal() {
+            notification.classList.remove("hide");
+        }
+
+        function hideModal() {
+            notification.classList.add('hide')
+        }
