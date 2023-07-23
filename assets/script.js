@@ -266,3 +266,73 @@ function getDogBreedInfo(breedName) {
         function hideModal() {
             notification.classList.add('hide')
         }
+
+        petType.onchange = function changeListener() {
+            selectedPetType = this.value;
+        }
+
+        breedForm.addEventListener('submit', getBreedInput);
+
+        function displayLocalStorage () {
+            var searchHistories = [searchHistoryDog, searchHistoryCat];
+
+            for (var i =0; i < searchHistories.length; i++) {
+                console.log(searchHistories[i])
+                var uniqueInputs = [...new Set(searchHistories[i])];
+                console.log(uniqueInputs)
+
+                var targetEl;
+                if(i === 0) {
+                    targetEl = historyElDog
+                } else {
+                    targetEl = historyElCat
+                }
+            }
+            console.log(targetEl)
+            targetEl.innerHTML = ""
+            for (var j = 0; j < uniqueInputs.length; j++) {
+                var pastSearchEl = document.createElement('button');
+                pastSearchEl.classList.add("button", "is-link", "is-light", "mt-2", "mr-1");
+                pastSearchEl.textContent = uniqueInputs[j]);
+                targetEl.prepend(pastSearchEl);
+            }
+
+            return;
+        }
+
+        var pastSearchData = function(event) {
+            var breed = event.target.getAttribute('data-breed');
+            if(breed) {
+                clearCurrent();
+                hideModal();
+
+                if (event.target.parentElement.id === 'search-history-dog') {
+                    getDogBreedInfo(breed);
+                } else {
+                    getCatBreedInfo(breed);
+                }
+                console.log(event.target.parentElement)
+            }
+        }
+
+        function clearCurrent() {
+            var currentPet = document.querySelector('.breed-data');
+            currentPet.innerText = "";
+            breedInputEl.value = "";
+
+            return;
+        }
+
+        function clearHistory(event) {
+            event.preventDefault();
+            localStorage.removeItem('searchDog');
+            searchHistoryDog = [];
+            localStorage.removeItem('searchCat');
+            searchHistoryCat = [];
+            historyElDog.innerHTML = "";
+            historyElCat.innerHTML = "";
+            clearCurrent();
+            petType.selectedIndex = 0;
+
+            return;
+        }
