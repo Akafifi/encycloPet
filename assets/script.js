@@ -336,3 +336,13 @@ function getDogBreedInfo(breedName) {
 
             return;
         }
+
+        notificationBtn.addEventListener('click', function() {
+            hideModal();
+
+        })
+
+        displayLocalStorage();
+        historyElDog.addEventListener('click', pastSearchData);
+        historyElCat.addEventListener("click", pastSearchData);
+        clearEl.addEventListener("click", clearHistory);
