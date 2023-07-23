@@ -1,16 +1,16 @@
-var catFactBtn = document.getElementById('cat-fact');
-var dogFactbtn = document.getElementById('dog-fact');
-var breedInputEl = document.querySelector('.search-breed');
-var breedForm = document.querySelector('breed-input');
-var petType = document.querySelector('#pet-select');
+var catFactBtn = document.getElementById("cat-fact");
+var dogFactbtn = document.getElementById("dog-fact");
+var breedInputEl = document.querySelector(".search-breed");
+var breedForm = document.querySelector("breed-input");
+var petType = document.querySelector("#pet-select");
 var selectedPetType;
-var notification = document.querySelector('#modal');
-var notificationBtn = document.querySelector('.notification .delete');
-var clearEl = document.querySelector('#clear');
-var historyElDog = document.querySelector('search-history-dog');
-var historyElCat = document.querySelector('#search-history-cat');
-var searchHistoryDog = JSON.parse(localStorage.getItem('searchDog')) || [];
-var searchHistoryCat = JSON.parse(localStorage.getItem('searchCat')) || [];
+var notification = document.querySelector("#modal");
+var notificationBtn = document.querySelector(".notification .delete");
+var clearEl = document.querySelector("#clear");
+var historyElDog = document.querySelector("search-history-dog");
+var historyElCat = document.querySelector("#search-history-cat");
+var searchHistoryDog = JSON.parse(localStorage.getItem("searchDog")) || [];
+var searchHistoryCat = JSON.parse(localStorage.getItem("searchCat")) || [];
 
 dogFactbtn.addEventListener('click', function() {
 
@@ -27,7 +27,7 @@ dogFactbtn.addEventListener('click', function() {
 
 })
 // ----Cat Button-------------
-catButton.addEventListener('click', function() {
+catFactBtn.addEventListener('click', function() {
     fetch('https://catfact.ninja/fact')
         .then( function(response) {
             return response.json();
@@ -254,6 +254,7 @@ function getDogBreedInfo(breedName) {
             console.log(selectedPetType)
             if (selectedPetType === 'cat') {
                 getCatBreedInfo(searchTerm);
+
             } else if (selectedPetType === 'dog') {
                 getDogBreedInfo(searchTerm)
             }
@@ -264,14 +265,14 @@ function getDogBreedInfo(breedName) {
         }
 
         function hideModal() {
-            notification.classList.add('hide')
+            notification.classList.add("hide");
         }
 
         petType.onchange = function changeListener() {
             selectedPetType = this.value;
         }
 
-        breedForm.addEventListener('submit', getBreedInput);
+        breedForm.addEventListener("submit", getBreedInput);
 
         function displayLocalStorage () {
             var searchHistories = [searchHistoryDog, searchHistoryCat];
@@ -287,26 +288,28 @@ function getDogBreedInfo(breedName) {
                 } else {
                     targetEl = historyElCat
                 }
-            }
-            console.log(targetEl)
-            targetEl.innerHTML = ""
-            for (var j = 0; j < uniqueInputs.length; j++) {
-                var pastSearchEl = document.createElement('button');
-                pastSearchEl.classList.add("button", "is-link", "is-light", "mt-2", "mr-1");
-                pastSearchEl.textContent = uniqueInputs[j]);
-                targetEl.prepend(pastSearchEl);
+                console.log(targetEl)
+                targetEl.innerHTML = ""
+                for (var j = 0; j < uniqueInputs.length; j++) {
+                    var pastSearchEl = document.createElement("button");
+                    pastSearchEl.classList.add("button", "is-link", "is-light", "mt-2", "mr-1");
+                    pastSearchEl.textContent = uniqueInputs[j];
+                    pastSearchEl.setAttribute("data-breed", uniqueInputs[j]);
+                    pastSearchEl.setAttribute("type", "submit");
+                    targetEl.prepend(pastSearchEl);
+                }
             }
 
-            return;
-        }
+        return;
+    }
 
         var pastSearchData = function(event) {
-            var breed = event.target.getAttribute('data-breed');
+            var breed = event.target.getAttribute("data-breed");
             if(breed) {
                 clearCurrent();
                 hideModal();
 
-                if (event.target.parentElement.id === 'search-history-dog') {
+                if (event.target.parentElement.id === "search-history-dog") {
                     getDogBreedInfo(breed);
                 } else {
                     getCatBreedInfo(breed);
@@ -316,7 +319,7 @@ function getDogBreedInfo(breedName) {
         }
 
         function clearCurrent() {
-            var currentPet = document.querySelector('.breed-data');
+            var currentPet = document.querySelector(".breed-data");
             currentPet.innerText = "";
             breedInputEl.value = "";
 
@@ -325,9 +328,9 @@ function getDogBreedInfo(breedName) {
 
         function clearHistory(event) {
             event.preventDefault();
-            localStorage.removeItem('searchDog');
+            localStorage.removeItem("searchDog");
             searchHistoryDog = [];
-            localStorage.removeItem('searchCat');
+            localStorage.removeItem("searchCat");
             searchHistoryCat = [];
             historyElDog.innerHTML = "";
             historyElCat.innerHTML = "";
@@ -337,7 +340,7 @@ function getDogBreedInfo(breedName) {
             return;
         }
 
-        notificationBtn.addEventListener('click', function() {
+        notificationBtn.addEventListener("click", function() {
             hideModal();
 
         })
