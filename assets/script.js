@@ -1,20 +1,20 @@
-var catFactBtn = document.getElementById("cat-fact");
-var dogFactbtn = document.getElementById("dog-fact");
+var catButton = document.getElementById('cat-fact');
+var dogFactbtn = document.getElementById('dog-fact')
 var breedInputEl = document.querySelector(".search-breed");
-var breedForm = document.querySelector("breed-input");
+var breedForm = document.querySelector("#breed-input");
 var petType = document.querySelector("#pet-select");
 var selectedPetType;
 var notification = document.querySelector("#modal");
 var notificationBtn = document.querySelector(".notification .delete");
 var clearEl = document.querySelector("#clear");
-var historyElDog = document.querySelector("search-history-dog");
+var historyElDog = document.querySelector("#search-history-dog");
 var historyElCat = document.querySelector("#search-history-cat");
 var searchHistoryDog = JSON.parse(localStorage.getItem("searchDog")) || [];
 var searchHistoryCat = JSON.parse(localStorage.getItem("searchCat")) || [];
 
 dogFactbtn.addEventListener('click', function() {
-
-        fetch('https://dogapi.dog/api/v2/facts')
+    
+    fetch('https://dogapi.dog/api/v2/facts')
     .then (function(response) {
         return response.json()
     })
@@ -26,8 +26,8 @@ dogFactbtn.addEventListener('click', function() {
     })
 
 })
-// ----Cat Button-------------
-catFactBtn.addEventListener('click', function() {
+// --------Cat Button--------------------
+catButton.addEventListener('click', function() {
     fetch('https://catfact.ninja/fact')
         .then( function(response) {
             return response.json();
@@ -41,23 +41,27 @@ catFactBtn.addEventListener('click', function() {
         })
 })
 
-function getDogBreedInfo(breedName) {
-    fetch('https://api.api-ninjas.com/v1/dogs?name=' + breedName, {
-        method: 'GET',
-        headers: { 'X-Api-Key': 'ClM+4cVtO1YtwmOO8xz1jw==0CKehjLoj6PIJUqT'},
-        contentType: 'application/json',
-        success: function(result) {
-            console.log(result);
-        }
 
-    })
-        .then(function(response) {
-            return response.json();
-        })
-        .then(function(breedData) {
-            console.log(breedData[0]);
-        
-        var container = document.querySelector(".breed-data");
+
+
+        // function to get information from api on dog breed input
+        function getInfoByDogBreed(breedName) {
+            fetch('https://api.api-ninjas.com/v1/dogs?name=' + breedName, {
+                method: 'GET',
+                headers: { 'X-Api-Key': 'ClM+4cVtO1YtwmOO8xz1jw==0CKehjLoj6PIJUqT'},
+                contentType: 'application/json',
+                success: function(result) {
+                    console.log(result);
+                }
+                
+            }) 
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(breedData) {
+                    console.log(breedData[0]);
+
+                    var container = document.querySelector(".breed-data");
                     
                     var centerDiv = document.createElement('div');
                     centerDiv.classList.add("is-flex", "is-flex-direction-column", "is-align-items-center");
@@ -146,7 +150,11 @@ function getDogBreedInfo(breedName) {
                 })
         }
 
-        function getCatBreedInfo(breedName) {
+        
+
+    
+        // function to get information from api on cat breed input
+        function getInfoByCatBreed(breedName) {
             fetch('https://api.api-ninjas.com/v1/cats?name=' + breedName, {
                 method: 'GET',
                 headers: { 'X-Api-Key': 'ClM+4cVtO1YtwmOO8xz1jw==0CKehjLoj6PIJUqT'},
@@ -244,108 +252,130 @@ function getDogBreedInfo(breedName) {
                 }) .catch(function(error) {
                     console.log(error);
                     showModal();
-                })  
+                })
         }
 
-        function getBreedInput (event) {
-            event.preventDefault();
-            var searchTerm = breedInputEl.value;
-            clearCurrent();
-            console.log(selectedPetType)
-            if (selectedPetType === 'cat') {
-                getCatBreedInfo(searchTerm);
 
-            } else if (selectedPetType === 'dog') {
-                getDogBreedInfo(searchTerm)
-            }
+
+// get user answer from breed input run functions
+function getBreedInput(event) {
+    event.preventDefault();
+    var searchTerm = breedInputEl.value;
+    clearCurrent();
+    console.log(selectedPetType)
+    if (selectedPetType === 'cat') {
+        getInfoByCatBreed(searchTerm);
+        
+    } else if (selectedPetType === 'dog') {
+        getInfoByDogBreed(searchTerm);
+        
+    } 
+    
+}
+
+// function to show pop up modal
+function showModal() {
+    notification.classList.remove("hide");
+}
+
+// function to hide pop up modal
+function hideModal() {
+    notification.classList.add("hide");
+}
+
+
+// function to listen for change on selected option of pet
+petType.onchange = function changeListener() {
+    selectedPetType = this.value;
+
+}
+
+breedForm.addEventListener("submit", getBreedInput);
+
+
+// display search history as buttons
+function displayLocalStorage () {
+    var histories = [searchHistoryDog, searchHistoryCat];
+
+    for (var i = 0; i < histories.length; i++) {
+        console.log(histories[i])
+        var uniqueInputs = [...new Set(histories[i])];
+       console.log(uniqueInputs)
+       
+        
+        var targetEl;
+        if(i === 0) {
+            targetEl = historyElDog
+        } else {
+            targetEl = historyElCat
         }
-
-        function  showModal() {
-            notification.classList.remove("hide");
+        console.log(targetEl)
+        targetEl.innerHTML = ""
+        for (var j = 0; j < uniqueInputs.length; j++) {
+            var pastSearchEl = document.createElement("button");
+            pastSearchEl.classList.add("button", "is-link", "is-light", "mt-2", "mr-1");
+            pastSearchEl.textContent = uniqueInputs[j];
+            pastSearchEl.setAttribute("data-breed", uniqueInputs[j]);
+            pastSearchEl.setAttribute("type", "submit");
+            targetEl.prepend(pastSearchEl);
         }
-
-        function hideModal() {
-            notification.classList.add("hide");
-        }
-
-        petType.onchange = function changeListener() {
-            selectedPetType = this.value;
-        }
-
-        breedForm.addEventListener("submit", getBreedInput);
-
-        function displayLocalStorage () {
-            var searchHistories = [searchHistoryDog, searchHistoryCat];
-
-            for (var i =0; i < searchHistories.length; i++) {
-                console.log(searchHistories[i])
-                var uniqueInputs = [...new Set(searchHistories[i])];
-                console.log(uniqueInputs)
-
-                var targetEl;
-                if(i === 0) {
-                    targetEl = historyElDog
-                } else {
-                    targetEl = historyElCat
-                }
-                console.log(targetEl)
-                targetEl.innerHTML = ""
-                for (var j = 0; j < uniqueInputs.length; j++) {
-                    var pastSearchEl = document.createElement("button");
-                    pastSearchEl.classList.add("button", "is-link", "is-light", "mt-2", "mr-1");
-                    pastSearchEl.textContent = uniqueInputs[j];
-                    pastSearchEl.setAttribute("data-breed", uniqueInputs[j]);
-                    pastSearchEl.setAttribute("type", "submit");
-                    targetEl.prepend(pastSearchEl);
-                }
-            }
-
-        return;
     }
 
-        var pastSearchData = function(event) {
-            var breed = event.target.getAttribute("data-breed");
-            if(breed) {
-                clearCurrent();
-                hideModal();
+    
+    return;
+}
+// function to display data from previous search buttons
+var pastSearchData = function(event) {
+    var breed = event.target.getAttribute("data-breed");
+    if(breed) {
+        clearCurrent();
+        hideModal();
 
-                if (event.target.parentElement.id === "search-history-dog") {
-                    getDogBreedInfo(breed);
-                } else {
-                    getCatBreedInfo(breed);
-                }
-                console.log(event.target.parentElement)
-            }
+        if (event.target.parentElement.id === "search-history-dog") {
+            getInfoByDogBreed(breed);
+        } else {
+             getInfoByCatBreed(breed);
         }
+        console.log(event.target.parentElement)
+        
+       
+    }
+}
 
-        function clearCurrent() {
-            var currentPet = document.querySelector(".breed-data");
-            currentPet.innerText = "";
-            breedInputEl.value = "";
+// clears current search when new search
+function clearCurrent() {
+    var currentPet = document.querySelector(".breed-data");
+    currentPet.innerText = "";
+    breedInputEl.value = "";
 
-            return;
-        }
+    return;
+}
 
-        function clearHistory(event) {
-            event.preventDefault();
-            localStorage.removeItem("searchDog");
-            searchHistoryDog = [];
-            localStorage.removeItem("searchCat");
-            searchHistoryCat = [];
-            historyElDog.innerHTML = "";
-            historyElCat.innerHTML = "";
-            clearCurrent();
-            petType.selectedIndex = 0;
+// function to clear search history
+function clearHistory(event) {
+    event.preventDefault();
+    localStorage.removeItem("searchDog");
+    searchHistoryDog = [];
+    localStorage.removeItem("searchCat");
+    searchHistoryCat = [];
+    historyElDog.innerHTML = "";
+    historyElCat.innerHTML = "";
+    clearCurrent();
+    petType.selectedIndex = 0;
+    
 
-            return;
-        }
+    return;
+}
 
-        notificationBtn.addEventListener("click", function() {
-            hideModal();
+// function to close notification popup when 'x' is clicked
+notificationBtn.addEventListener("click", function() {
+    hideModal();
 
-        })
+})
 
-        displayLocalStorage();
-        historyElDog.addEventListener('click', pastSearchData);
-        historyElCat.addEventListener("click", pastSearchData);
-        clearEl.addEventListener("click", clearHistory);
+
+displayLocalStorage();
+historyElDog.addEventListener("click", pastSearchData);
+historyElCat.addEventListener("click", pastSearchData);
+clearEl.addEventListener("click", clearHistory);
+
