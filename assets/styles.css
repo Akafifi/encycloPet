@@ -33,3 +33,9 @@ img {
     display: flex;
     justify-content: space-around;
 }
+
+.header-image {
+    display: flex;
+    justify-content: center;
+
+}
